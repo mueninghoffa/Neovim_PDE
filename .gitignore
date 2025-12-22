@@ -1,0 +1,15 @@
+# Mac/Linux system files
+.DS_Store
+
+# Python cache (if you write scripts inside config)
+__pycache__/
+*.py[cod]
+
+# Swallow logs/undo files if you configured them to save here
+*.log
+undo/
+swap/
+backup/
+
+# User-specific persistent data (if any)
+nvim_tree_history
