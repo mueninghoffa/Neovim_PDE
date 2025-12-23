@@ -3,7 +3,7 @@ return {
     build = ":TSUpdate",
     config = function()
         -- The require happens INSIDE this function
-        local configs = require("nvim-treesitter.configs")
+        local configs = require("nvim-treesitter.config")
         configs.setup({
             ensure_installed = { "python", "lua", "vim", "vimdoc", "javascript", "html" },
             highlight = { enable = true },
