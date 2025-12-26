@@ -59,9 +59,6 @@ return {
 	  
 	  --Toggle Dap UI
 	  vim.keymap.set('n', '<leader>dt', dapui.toggle, { desc = 'Debug: Toggle UI' })
-	  
-	  -- Open telescope window			
-	  vim.keymap.set('n', '<leader>d', require('telescope.builtin').diagnostics, { desc = '[D]iagnostics list' })
     end
   }
 }

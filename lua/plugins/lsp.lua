@@ -32,6 +32,9 @@ return {
                                         -- Optional: Helps Pyright understand complex imports
                                         autoSearchPaths = true,
                                         useLibraryCodeForTypes = true,
+                                        diagnosticSeverityOverrides = {
+                                            reportUnreachable = "hint",
+                                        }
                                     }
                                 }
                             }
@@ -47,7 +50,11 @@ return {
         "neovim/nvim-lspconfig",
         dependencies = { "hrsh7th/cmp-nvim-lsp" },
         config = function()
-            -- 1. Global Diagnostic Config
+            -- 1. Prevent "unnecessary" code (unreachable) from being grayed out.
+            vim.api.nvim_set_hl(0, "DiagnosticUnnecessary", { link = "Normal" })
+            vim.api.nvim_set_hl(0, "LspUnnecessary", { link = "Normal" })
+
+            -- 2. Global Diagnostic Config
             vim.diagnostic.config({
                 virtual_text = false,
                 signs = true,
@@ -64,7 +71,7 @@ return {
                 },
             })
 
-            -- 2. Show diagnostic popup on cursor hover
+            -- 3. Show diagnostic popup on cursor hover
             -- We use a proper Lua Autocmd here to avoid errors
             vim.api.nvim_create_autocmd("CursorHold", {
                 buffer = nil, -- Applies to all buffers
