@@ -13,3 +13,7 @@ backup/
 
 # User-specific persistent data (if any)
 nvim_tree_history
+
+# Health text files
+checkhealth.txt
+lazyhealth.txt
