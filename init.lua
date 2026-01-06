@@ -59,3 +59,14 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		end)
 	end,
 })
+
+-- Force-start Treesitter for Python files to bypass auto-attach failure
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "python", "lua", "rust" }, -- Add other languages if they fail too
+	callback = function()
+		local status_ok, _ = pcall(vim.treesitter.start)
+		if not status_ok then
+			-- Optional: print silently to debug if needed, but usually safe to ignore
+		end
+	end,
+})
