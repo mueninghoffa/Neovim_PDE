@@ -49,7 +49,7 @@ return {
 		end,
 	},
 
-	-- 4. Vim-Sneak: Robust Multiline f/F/t/T
+	-- 4. Vim-Sneak: Refined for better highlighting
 	{
 		"justinmk/vim-sneak",
 		keys = {
@@ -59,23 +59,22 @@ return {
 			{ "T", "<Plug>Sneak_T", mode = { "n", "x", "o" }, desc = "Sneak Till Backward" },
 		},
 		config = function()
-			-- Ensures ; and , work as expected
+			-- 1. Use ; and , for next/previous
 			vim.g["sneak#s_next"] = 1
-		end,
-	},
 
-	-- 5. Treesitter Context (Sticky Headers)
-	{
-		"nvim-treesitter/nvim-treesitter-context",
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		opts = {
-			enable = true, -- Enable the plugin
-			max_lines = 5, -- Sticky window will span up to 5 lines
-			min_window_height = 0, -- Always show context regardless of window height
-			line_numbers = true, -- Match editor line numbers
-			multiline_threshold = 20, -- Max lines to show for a single context
-			trim_scope = "outer", -- Discard outer lines if max_lines is exceeded
-			mode = "cursor", -- Stick based on cursor position
-		},
+			-- 2. Highlight ALL matches on the screen (both directions)
+			vim.g["sneak#label"] = 0 -- Ensure labels are off if you prefer pure character search
+			vim.g["sneak#use_ic_scs"] = 1 -- Case insensitive search
+
+			-- 3. The "Modern IDE" Highlight: highlight all occurrences immediately
+			-- This makes it behave more like a 'find' in a browser
+			vim.g["sneak#prompt"] = "Sneak: "
+
+			-- This setting ensures that search results stay highlighted until you move
+			vim.cmd([[
+              highlight Sneak guifg=black guibg=#00ff00 ctermfg=black ctermbg=green
+              highlight SneakScope guifg=black guibg=#00ffff ctermfg=black ctermbg=cyan
+            ]])
+		end,
 	},
 }
