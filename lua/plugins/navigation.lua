@@ -36,45 +36,68 @@ return {
 		},
 	},
 
-	-- 3. Mini.nvim (Keymap combos for the home row "mash")
+	-- 3. Better Escape (FIXED for v2.0+ Syntax)
+	-- The plugin now requires a nested table structure for mappings.
 	{
-		"echasnovski/mini.nvim",
+		"max397574/better-escape.nvim",
 		config = function()
-			require("mini.keymap").setup({
-				combos = {
-					{ mode = "i", keys = "hjkl", action = "<Esc>", desc = "Mash home row to escape" },
+			require("better_escape").setup({
+				timeout = 200, -- 200ms interval to detect the mash
+				default_mappings = false, -- We disable defaults to strictly use our mash list
+				mappings = {
+					-- 'i' stands for Insert Mode
+					i = {
+						j = {
+							-- If you type 'j' then 'k', map to Escape
+							k = "<Esc>",
+							-- If you type 'j' then 'l', map to Escape
+							l = "<Esc>",
+						},
+						k = {
+							-- If you type 'k' then 'j', map to Escape
+							j = "<Esc>",
+						},
+						l = {
+							-- If you type 'l' then 'j', map to Escape
+							j = "<Esc>",
+						},
+					},
 				},
-				timeout = 1000,
 			})
 		end,
 	},
 
-	-- 4. Vim-Sneak: Refined for better highlighting
+	-- 4. Flash.nvim
 	{
-		"justinmk/vim-sneak",
-		keys = {
-			{ "f", "<Plug>Sneak_f", mode = { "n", "x", "o" }, desc = "Sneak Forward" },
-			{ "F", "<Plug>Sneak_F", mode = { "n", "x", "o" }, desc = "Sneak Backward" },
-			{ "t", "<Plug>Sneak_t", mode = { "n", "x", "o" }, desc = "Sneak Till Forward" },
-			{ "T", "<Plug>Sneak_T", mode = { "n", "x", "o" }, desc = "Sneak Till Backward" },
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		opts = {
+			modes = {
+				char = {
+					enabled = true,
+					multi_line = true, -- Enable full-screen search for f/F/t/T
+				},
+			},
 		},
-		config = function()
-			-- 1. Use ; and , for next/previous
-			vim.g["sneak#s_next"] = 1
-
-			-- 2. Highlight ALL matches on the screen (both directions)
-			vim.g["sneak#label"] = 0 -- Ensure labels are off if you prefer pure character search
-			vim.g["sneak#use_ic_scs"] = 1 -- Case insensitive search
-
-			-- 3. The "Modern IDE" Highlight: highlight all occurrences immediately
-			-- This makes it behave more like a 'find' in a browser
-			vim.g["sneak#prompt"] = "Sneak: "
-
-			-- This setting ensures that search results stay highlighted until you move
-			vim.cmd([[
-              highlight Sneak guifg=black guibg=#00ff00 ctermfg=black ctermbg=green
-              highlight SneakScope guifg=black guibg=#00ffff ctermfg=black ctermbg=cyan
-            ]])
-		end,
+		keys = {
+			-- 1. Standard Flash Jump (Keep on 's')
+			{
+				"s",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").jump()
+				end,
+				desc = "Flash",
+			},
+			-- 2. Treesitter Select (Leader+S)
+			{
+				"<leader>S",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").treesitter()
+				end,
+				desc = "Flash Treesitter",
+			},
+		},
 	},
 }
