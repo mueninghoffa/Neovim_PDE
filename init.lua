@@ -70,3 +70,4 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 	end,
 })
+require("config.keymaps")

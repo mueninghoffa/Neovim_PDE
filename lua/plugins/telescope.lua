@@ -39,5 +39,14 @@ return {
 		vim.keymap.set("n", "<leader>d", function()
 			require("telescope.builtin").diagnostics({ bufnr = 0 })
 		end, { desc = "[D]iagnostics list (Current Buffer)" })
+
+		-- Standard Search
+		vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, { desc = "[F]ind [F]iles" })
+		vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, { desc = "[F]ind by [G]rep" })
+		vim.keymap.set("n", "<leader>fr", require("telescope.builtin").oldfiles, { desc = "[F]ind [R]ecent Files" })
+
+		-- Integration with Aerial
+		require("telescope").load_extension("aerial")
+		vim.keymap.set("n", "<leader>ss", "<cmd>Telescope aerial<CR>", { desc = "[S]earch [S]ymbols (Aerial)" })
 	end,
 }
