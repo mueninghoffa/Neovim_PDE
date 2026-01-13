@@ -42,6 +42,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 			"stylua", -- Lua formatter
 			"jupytext", -- Jupyter notebook conversion
 			"tree-sitter-cli", -- Needed for syntax highlighting updates
+			"yamlfmt",
 		}
 
 		registry.refresh(function()
@@ -62,7 +63,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 -- Force-start Treesitter for Python files to bypass auto-attach failure
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "python", "lua", "rust" }, -- Add other languages if they fail too
+	pattern = { "python", "lua", "rust", "yaml" }, -- Add other languages if they fail too
 	callback = function()
 		local status_ok, _ = pcall(vim.treesitter.start)
 		if not status_ok then
