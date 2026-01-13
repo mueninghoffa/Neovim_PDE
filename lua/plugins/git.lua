@@ -60,6 +60,7 @@ return {
 				-- Actions
 				map("n", "<leader>gP", gs.preview_hunk, { desc = "Git: Preview Hunk" })
 				map("n", "<leader>gb", gs.toggle_current_line_blame, { desc = "Git: Toggle Blame" })
+				map("n", "<leader>gs", gs.stage_hunk, { desc = "Git: Un/Stage Hunk" })
 
 				map("n", "<leader>gr", function()
 					-- If auto-preview is active, close floating windows beforehand
