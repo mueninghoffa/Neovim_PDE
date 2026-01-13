@@ -36,7 +36,7 @@ return {
 		})
 
 		-- Keymap for local diagnostics
-		vim.keymap.set("n", "<leader>d", function()
+		vim.keymap.set("n", "<leader>D", function()
 			require("telescope.builtin").diagnostics({ bufnr = 0 })
 		end, { desc = "[D]iagnostics list (Current Buffer)" })
 

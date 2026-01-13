@@ -44,6 +44,7 @@ return {
 					end,
 				},
 			})
+			vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 		end,
 	},
 
@@ -71,23 +72,6 @@ return {
 					header = "",
 					prefix = "",
 				},
-			})
-
-			-- 3. Show diagnostic popup on cursor hover
-			-- We use a proper Lua Autocmd here to avoid errors
-			vim.api.nvim_create_autocmd("CursorHold", {
-				buffer = nil, -- Applies to all buffers
-				callback = function()
-					local opts = {
-						focusable = false,
-						close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-						border = "rounded",
-						source = "always",
-						prefix = " ",
-						scope = "line",
-					}
-					vim.diagnostic.open_float(nil, opts)
-				end,
 			})
 		end,
 	},

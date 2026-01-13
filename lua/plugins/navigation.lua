@@ -82,7 +82,7 @@ return {
 		keys = {
 			-- 1. Standard Flash Jump (Keep on 's')
 			{
-				"s",
+				"<leader>s",
 				mode = { "n", "x", "o" },
 				function()
 					require("flash").jump()

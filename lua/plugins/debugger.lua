@@ -58,7 +58,7 @@ return {
 			vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debug: Step Into" })
 
 			--Toggle Dap UI
-			vim.keymap.set("n", "<leader>dt", dapui.toggle, { desc = "Debug: Toggle UI" })
+			vim.keymap.set("n", "<leader>bt", dapui.toggle, { desc = "Debug: Toggle UI" })
 		end,
 	},
 }
