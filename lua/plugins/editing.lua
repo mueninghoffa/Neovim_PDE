@@ -12,11 +12,50 @@ return {
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = function()
-			require("nvim-autopairs").setup({})
-			-- Integrate with nvim-cmp
-			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-			local cmp = require("cmp")
-			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+			local npairs = require("nvim-autopairs")
+			local Rule = require("nvim-autopairs.rule")
+			local cond = require("nvim-autopairs.conds")
+
+			npairs.setup({
+				check_ts = true,
+				ts_config = {
+					lua = { "string" },
+					javascript = { "template_string" },
+					python = { "comment" },
+				},
+			})
+
+			-- 1. F-STRING FIX
+			-- We handle ' and " specifically to fix f-string behavior
+			local quotes = { "'", '"' }
+			for _, quote in ipairs(quotes) do
+				local rule = npairs.get_rule(quote)
+				if rule and rule.with_pair then
+					-- Enable pairing if next char is '}' (f-string interpolation)
+					rule:with_pair(function(opts)
+						if opts.next_char == "}" then
+							return true
+						end
+						return nil
+					end)
+
+					-- Enable moving (typing through) even inside f-string braces
+					-- We check if the char we typed matches the next char
+					rule:with_move(function(opts)
+						return opts.char == opts.next_char
+					end)
+				else
+					--Fallback: Create new specific rule for Python if default is missing
+					npairs.add_rule(Rule(quote, quote, "python"):with_pair(function(opts)
+						if opts.next_char == "}" then
+							return true
+						end
+						return nil
+					end):with_move(function(opts)
+						return opts.char == opts.next_char
+					end))
+				end
+			end
 		end,
 	},
 
@@ -30,4 +69,3 @@ return {
 		end,
 	},
 }
-
