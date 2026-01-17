@@ -42,7 +42,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 			"stylua", -- Lua formatter
 			"jupytext", -- Jupyter notebook conversion
 			"tree-sitter-cli", -- Needed for syntax highlighting updates
-			"yamlfmt",
+			"yamlfmt", -- YAML formatter
 		}
 
 		registry.refresh(function()
