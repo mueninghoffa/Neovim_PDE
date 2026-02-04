@@ -189,7 +189,11 @@ git clone https://github.com/mueninghoffa/Neovim_PDE ~/.config/nvim
 Create the conda environment to be used by the neovim backend.
 
 ```bash
-conda env create --file neovim_env.yml
+# Windows
+conda env create --file $env:LOCALAPPDATA\nvim\neovim_env.yml
+
+Linux
+conda env create --file ~/.config/nvim/neovim_env.yml
 ```
 
 ## Run Neovim
