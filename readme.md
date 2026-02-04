@@ -192,7 +192,7 @@ Create the conda environment to be used by the neovim backend.
 # Windows
 conda env create --file $env:LOCALAPPDATA\nvim\neovim_env.yml
 
-Linux
+# Linux
 conda env create --file ~/.config/nvim/neovim_env.yml
 ```
 
