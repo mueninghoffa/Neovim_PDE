@@ -9,9 +9,29 @@ return {
 	-- 2. Mason LSP Config: Bridges Mason and LSP
 	{
 		"williamboman/mason-lspconfig.nvim",
+		dependencies = { "williamboman/mason.nvim" },
 		config = function()
+			-- Automate non-LSP tools (Formatters/Debuggers)
+			local mason_registry = require("mason-registry")
+			local tools = {
+				"black",
+				"isort",
+				"debugpy",
+				"stylua",
+				"jupytext",
+				"yamlfmt",
+			}
+
+			for _, tool in ipairs(tools) do
+				local p = mason_registry.get_package(tool)
+				if not p:is_installed() then
+					p:install()
+				end
+			end
+
 			require("mason-lspconfig").setup({
 				ensure_installed = { "pyright", "ruff" },
+
 				handlers = {
 					-- 1. The Default Handler (for everything else)
 					function(server_name)
@@ -21,7 +41,7 @@ return {
 						})
 					end,
 
-					-- 2. Specific Handler for Pyright (The Fix)
+					-- 2. Specific Handler for Pyright
 					["pyright"] = function()
 						local capabilities = require("cmp_nvim_lsp").default_capabilities()
 						require("lspconfig").pyright.setup({

@@ -1,5 +1,3 @@
--- C:\Users\YourUser\AppData\Local\nvim\init.lua
-
 -- Basic Options
 vim.g.mapleader = " " -- The most important key! (Spacebar)
 vim.opt.number = true
@@ -13,7 +11,43 @@ vim.opt.cursorline = true -- Highlight the line the cursor is on
 vim.opt.termguicolors = true
 vim.opt.updatetime = 250 -- Enable 24-bit RGB colors
 
--- Load Lazy.nvim config
+-- Use the neovim conda environment (OS-aware)
+local function get_python_path()
+	local home = vim.fn.expand("~")
+	local is_windows = vim.fn.has("win32") == 1
+
+	-- Common names for the miniconda/anaconda folder
+	local conda_names = { "miniconda3", "anaconda3", ".conda" }
+
+	for _, name in ipairs(conda_names) do
+		local base_path = home .. "/" .. name .. "/envs/neovim"
+		local python_bin = is_windows and (base_path .. "/python.exe") or (base_path .. "/bin/python")
+
+		if vim.fn.executable(python_bin) == 1 then
+			return python_bin
+		end
+	end
+
+	-- Fallback to system python if the 'neovim' env isn't found
+	return vim.fn.exepath("python3") or vim.fn.exepath("python")
+end
+
+vim.g.python3_host_prog = get_python_path()
+
+-- install lazyvim if it is not already installed
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable",
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+
 require("config.lazy")
 
 -------------------------------------------------------------------------------
@@ -35,29 +69,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		if not registry_avail then
 			return
 		end
-
-		local tools_to_install = {
-			"black", -- Python formatter
-			"isort", -- Python import sorter
-			"stylua", -- Lua formatter
-			"jupytext", -- Jupyter notebook conversion
-			"tree-sitter-cli", -- Needed for syntax highlighting updates
-			"yamlfmt",
-		}
-
-		registry.refresh(function()
-			for _, tool in ipairs(tools_to_install) do
-				if registry.has_package(tool) then
-					local p = registry.get_package(tool)
-					if not p:is_installed() then
-						vim.notify("🚀 Installing missing tool: " .. tool, vim.log.levels.INFO)
-						p:install()
-					end
-				else
-					vim.notify("⚠️ Mason tool not found: " .. tool, vim.log.levels.WARN)
-				end
-			end
-		end)
 	end,
 })
 

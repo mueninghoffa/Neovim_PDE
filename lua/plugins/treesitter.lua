@@ -14,6 +14,7 @@ return {
 
 			configs.setup({
 				ensure_installed = { "python", "lua", "vim", "vimdoc", "javascript", "html", "yaml", "json" },
+				auto_install = true,
 				highlight = { enable = true },
 				indent = { enable = true },
 			})

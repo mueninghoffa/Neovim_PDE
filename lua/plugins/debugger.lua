@@ -17,12 +17,17 @@ return {
 			-- SETUP PYTHON
 			local dap_python = require("dap-python")
 
-			-- path to debug adapter (OS-aware)
-			local is_windows = vim.fn.has("win32") == 1
-			local mason_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv"
-			local debugpy_adapter = mason_path .. (is_windows and "/Scripts/python.exe" or "/bin/python")
+			-- path to debug adapter in conda env
+			local debugpy_path = vim.g.python3_host_prog
 
-			dap_python.setup(debugpy_adapter_python)
+			-- fallback logic (OS-aware)
+			if not debugpy_path or vim.fn.filereadable(debugpy_path) == 0 then
+				local is_windows = vim.fn.has("win32") == 1
+				local mason_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv"
+				local debugpy_path = mason_path .. (is_windows and "/Scripts/python.exe" or "/bin/python")
+			end
+
+			dap_python.setup(debugpy_path)
 
 			-- correct python installation
 			-- force it to use the 'python' command currently active in shell
