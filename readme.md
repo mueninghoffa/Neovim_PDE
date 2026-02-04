@@ -129,7 +129,7 @@ sudo apt install build-essential ripgrep fd-find xclip git
 mkdir -p ~/.local/bin
 ln -s $(which fdfind) ~/.local/bin/fd
 ```
-If you are using Windows Subsystem for Linux (WSL2), skip `xclip`. Instead, install `win32yank` on windows using chocolatey. Neovim should automatically detect it.
+If you are using Windows Subsystem for Linux (WSL2), skip `xclip`. Instead, install `win32yank` on windows using chocolatey (install in Powershell, not WSL). Neovim should automatically detect it.
 
 ### Nerd font
 
