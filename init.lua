@@ -69,6 +69,29 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		if not registry_avail then
 			return
 		end
+
+		local tools_to_install = {
+			"black", -- Python formatter
+			"isort", -- Python import sorter
+			"stylua", -- Lua formatter
+			"jupytext", -- Jupyter notebook conversion
+			"tree-sitter-cli", -- Needed for syntax highlighting updates
+			"yamlfmt", -- YAML formatter
+		}
+
+		registry.refresh(function()
+			for _, tool in ipairs(tools_to_install) do
+				if registry.has_package(tool) then
+					local p = registry.get_package(tool)
+					if not p:is_installed() then
+						vim.notify("🚀 Installing missing tool: " .. tool, vim.log.levels.INFO)
+						p:install()
+					end
+				else
+					vim.notify("⚠️ Mason tool not found: " .. tool, vim.log.levels.WARN)
+				end
+			end
+		end)
 	end,
 })
 
