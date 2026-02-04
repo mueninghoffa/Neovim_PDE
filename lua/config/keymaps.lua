@@ -22,3 +22,11 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move block up" })
 vim.keymap.set("n", "[c", function()
 	require("treesitter-context").go_to_context(vim.v.count1)
 end, { silent = true })
+
+-- Patching common typos
+vim.cmd([[cabbrev Q q]])
+vim.cmd([[cabbrev W w]])
+vim.cmd([[cabbrev X x]])
+
+-- Obvious equivalent
+vim.cmd([[cabbrev xa wqa]])
