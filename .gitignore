@@ -6,6 +6,7 @@ __pycache__/
 *.py[cod]
 
 # Swallow logs/undo files if you configured them to save here
+*.swp
 *.log
 undo/
 swap/

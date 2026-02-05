@@ -155,10 +155,10 @@ mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts
 
 # Download the nerd font
-curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/BitstromWera.tar.xz
+curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/BitstreamVeraSansMono.tar.xz
 
 # Unpack font
-tar -xvJ BitstromWera.tar.xz
+tar -xvJf BitstromWera.tar.xz
 
 # Delete the compressed file
 rm ./BitstromWera.tar.xz
@@ -199,3 +199,6 @@ conda env create --file ~/.config/nvim/neovim_env.yml
 ## Run Neovim
 
 Open neovim with the command `nvim`. The first time Neovim is opened, it should automatically install the package managers Lazyvim and Mason, which will themselves install many packages. The full list of installed plugins is in `lazy-lock.json`.
+
+### Manually install treesitter languages
+For reasons I do not know, treesitter refuses to automatically install the languages listed in its config function. Manually install a language with the command `:TSInstall <language>`.

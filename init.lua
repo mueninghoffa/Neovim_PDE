@@ -11,6 +11,9 @@ vim.opt.cursorline = true -- Highlight the line the cursor is on
 vim.opt.termguicolors = true
 vim.opt.updatetime = 250 -- Enable 24-bit RGB colors
 
+vim.g.loaded_netrw = 1 -- manually disable netrw to prevent conflicts
+vim.g.loaded_netrwPlugin = 1
+
 -- Use the neovim conda environment (OS-aware)
 local function get_python_path()
 	local home = vim.fn.expand("~")
