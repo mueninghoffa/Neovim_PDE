@@ -57,10 +57,10 @@ return {
 			vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
 
 			-- Step Over (F10)
-			vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debug: Step Over" })
+			vim.keymap.set("n", "<F9>", dap.step_over, { desc = "Debug: Step Over" })
 
 			-- Step Into (F11)
-			vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debug: Step Into" })
+			vim.keymap.set("n", "<F10>", dap.step_into, { desc = "Debug: Step Into" })
 
 			--Toggle Dap UI
 			vim.keymap.set("n", "<leader>bt", dapui.toggle, { desc = "Debug: Toggle UI" })

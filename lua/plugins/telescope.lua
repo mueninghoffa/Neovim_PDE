@@ -47,6 +47,6 @@ return {
 
 		-- Integration with Aerial
 		require("telescope").load_extension("aerial")
-		vim.keymap.set("n", "<leader>ss", "<cmd>Telescope aerial<CR>", { desc = "[S]earch [S]ymbols (Aerial)" })
+		vim.keymap.set("n", "<leader>A", "<cmd>Telescope aerial<CR>", { desc = "[S]earch [S]ymbols (Aerial)" })
 	end,
 }
