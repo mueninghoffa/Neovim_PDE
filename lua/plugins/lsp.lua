@@ -3,6 +3,7 @@ return {
 	{
 		"williamboman/mason.nvim",
 		config = function()
+			local neovim_python = vim.g.python3_host_prog
 			require("mason").setup()
 		end,
 	},
@@ -11,24 +12,6 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
-			-- Automate non-LSP tools (Formatters/Debuggers)
-			local mason_registry = require("mason-registry")
-			local tools = {
-				"black",
-				"isort",
-				"debugpy",
-				"stylua",
-				"jupytext",
-				"yamlfmt",
-			}
-
-			for _, tool in ipairs(tools) do
-				local p = mason_registry.get_package(tool)
-				if not p:is_installed() then
-					p:install()
-				end
-			end
-
 			require("mason-lspconfig").setup({
 				ensure_installed = { "pyright", "ruff" },
 
@@ -49,7 +32,7 @@ return {
 							settings = {
 								python = {
 									-- Force Pyright to use the python from the active shell (Conda)
-									pythonPath = vim.fn.exepath("python"),
+									pythonPath = vim.fn.exepath("python") or "python",
 									analysis = {
 										-- Optional: Helps Pyright understand complex imports
 										autoSearchPaths = true,

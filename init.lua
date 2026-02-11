@@ -15,27 +15,45 @@ vim.g.loaded_netrw = 1 -- manually disable netrw to prevent conflicts
 vim.g.loaded_netrwPlugin = 1
 
 -- Use the neovim conda environment (OS-aware)
-local function get_python_path()
+local function setup_neovim_env()
 	local home = vim.fn.expand("~")
 	local is_windows = vim.fn.has("win32") == 1
-
-	-- Common names for the miniconda/anaconda folder
 	local conda_names = { "miniconda3", "anaconda3", ".conda" }
 
 	for _, name in ipairs(conda_names) do
-		local base_path = home .. "/" .. name .. "/envs/neovim"
-		local python_bin = is_windows and (base_path .. "/python.exe") or (base_path .. "/bin/python")
+		-- Normalize slashes for the current OS
+		local base_path = home
+			.. (is_windows and "\\" or "/")
+			.. name
+			.. (is_windows and "\\envs\\neovim" or "/envs/neovim")
+		local python_bin = is_windows and (base_path .. "\\python.exe") or (base_path .. "/bin/python")
 
 		if vim.fn.executable(python_bin) == 1 then
+			-- 1. Set the host prog for Neovim's internal python support
+			vim.g.python3_host_prog = python_bin
+
+			-- 2. Inject the env's folders into PATH for Mason and other tools
+			local sep = is_windows and ";" or ":"
+			if is_windows then
+				-- Windows: python.exe is in root, but pip and tools are in /Scripts
+				local scripts = base_path .. "\\Scripts"
+				vim.env.PATH = base_path .. sep .. scripts .. sep .. vim.env.PATH
+			else
+				-- Linux: both python and pip are in /bin
+				local bin = base_path .. "/bin"
+				vim.env.PATH = bin .. sep .. vim.env.PATH
+			end
 			return python_bin
 		end
 	end
 
-	-- Fallback to system python if the 'neovim' env isn't found
-	return vim.fn.exepath("python3") or vim.fn.exepath("python")
+	-- Fallback: If 'neovim' env isn't found, try to find a system python
+	local fallback = vim.fn.exepath("python3") ~= "" and vim.fn.exepath("python3") or vim.fn.exepath("python")
+	return fallback
 end
-
-vim.g.python3_host_prog = get_python_path()
+-- Run the setup and store the path
+local neovim_python = setup_neovim_env()
+vim.g.python3_host_prog = neovim_python
 
 -- install lazyvim if it is not already installed
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -76,6 +94,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		local tools_to_install = {
 			"black", -- Python formatter
 			"isort", -- Python import sorter
+			"debugpy", -- Python debugger
 			"stylua", -- Lua formatter
 			"jupytext", -- Jupyter notebook conversion
 			"tree-sitter-cli", -- Needed for syntax highlighting updates
