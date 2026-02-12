@@ -15,6 +15,8 @@ vim.g.loaded_netrw = 1 -- manually disable netrw to prevent conflicts
 vim.g.loaded_netrwPlugin = 1
 
 -- Use the neovim conda environment (OS-aware)
+-- IMPORTANT: Only set python3_host_prog, do NOT modify PATH
+-- This way LSP servers see the terminal's active conda environment
 local function setup_neovim_env()
 	local home = vim.fn.expand("~")
 	local is_windows = vim.fn.has("win32") == 1
@@ -29,20 +31,9 @@ local function setup_neovim_env()
 		local python_bin = is_windows and (base_path .. "\\python.exe") or (base_path .. "/bin/python")
 
 		if vim.fn.executable(python_bin) == 1 then
-			-- 1. Set the host prog for Neovim's internal python support
+			-- Set the host prog for Neovim's internal python support ONLY
+			-- Do NOT modify PATH - let it use the terminal's active environment
 			vim.g.python3_host_prog = python_bin
-
-			-- 2. Inject the env's folders into PATH for Mason and other tools
-			local sep = is_windows and ";" or ":"
-			if is_windows then
-				-- Windows: python.exe is in root, but pip and tools are in /Scripts
-				local scripts = base_path .. "\\Scripts"
-				vim.env.PATH = base_path .. sep .. scripts .. sep .. vim.env.PATH
-			else
-				-- Linux: both python and pip are in /bin
-				local bin = base_path .. "/bin"
-				vim.env.PATH = bin .. sep .. vim.env.PATH
-			end
 			return python_bin
 		end
 	end
