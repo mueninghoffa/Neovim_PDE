@@ -49,21 +49,81 @@ return {
 				dapui.close()
 			end
 
-			-- KEYMAPS (The "Leader" key is assumed to be Space)
+			-- KEYMAPS
+			-- For moving between breakpoints
+			local function goto_breakpoint(direction)
+				local valid_directions = { next = true, prev = true }
+				if not valid_directions[direction] then
+					error("direction must be 'next' or 'prev'. Received:" .. tostring(direction))
+				end
+
+				local breakpoints = require("dap.breakpoints").get(vim.api.nvim_get_current_buf())[1]
+				local cur_line = vim.api.nvim_win_get_cursor(0)[1]
+
+				if not breakpoints then
+					print("No breakpoints set in this buffer")
+					return
+				end
+
+				local lines = {}
+				for _, bp in ipairs(breakpoints) do
+					table.insert(lines, bp["line"])
+				end
+
+				table.sort(lines)
+
+				local closest = { next = nil, prev = nil }
+				if cur_line < lines[1] then
+					closest["next"] = lines[1]
+				elseif cur_line > lines[#lines] then
+					closest["prev"] = lines[#lines]
+				else
+					for i, line in ipairs(lines) do
+						if line == cur_line then
+							closest["next"] = lines[i + 1]
+							closest["prev"] = lines[i - 1]
+							break
+						end
+						if line > cur_line then
+							closest["next"] = line
+							closest["prev"] = lines[i - 1]
+							break
+						end
+					end
+				end
+
+				if not closest[direction] then
+					print("No " .. tostring(direction) .. " breakpoint")
+					return
+				end
+
+				vim.api.nvim_win_set_cursor(0, { closest[direction], 0 })
+			end
+
 			-- Toggle Breakpoint (Leader + b)
 			vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
 
 			-- Start / Continue (F5)
 			vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
 
-			-- Step Over (F10)
+			-- Step Over (F9)
 			vim.keymap.set("n", "<F9>", dap.step_over, { desc = "Debug: Step Over" })
 
-			-- Step Into (F11)
+			-- Step Into (F10)
 			vim.keymap.set("n", "<F10>", dap.step_into, { desc = "Debug: Step Into" })
 
 			--Toggle Dap UI
 			vim.keymap.set("n", "<leader>bt", dapui.toggle, { desc = "Debug: Toggle UI" })
+
+			-- Next breakpoint
+			vim.keymap.set("n", "<leader>bn", function()
+				goto_breakpoint("next")
+			end, { desc = "Debug: Goto Next Breakpoint" })
+
+			-- Prev breakpoint
+			vim.keymap.set("n", "<leader>bp", function()
+				goto_breakpoint("prev")
+			end, { desc = "Debug: Goto Prev Breakpoint" })
 		end,
 	},
 }
