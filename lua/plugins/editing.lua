@@ -18,6 +18,7 @@ return {
 
 			npairs.setup({
 				check_ts = true,
+				map_break_line = false, -- Do not create undo breaks
 				ts_config = {
 					lua = { "string" },
 					javascript = { "template_string" },
