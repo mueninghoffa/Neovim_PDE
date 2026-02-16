@@ -45,8 +45,25 @@ return {
 				timeout = 200, -- 200ms interval to detect the mash
 				default_mappings = false, -- We disable defaults to strictly use our mash list
 				mappings = {
-					-- 'i' stands for Insert Mode
+					-- 'i' for Insert Mode
 					i = {
+						j = {
+							-- If you type 'j' then 'k', map to Escape
+							k = "<Esc>",
+							-- If you type 'j' then 'l', map to Escape
+							l = "<Esc>",
+						},
+						k = {
+							-- If you type 'k' then 'j', map to Escape
+							j = "<Esc>",
+						},
+						l = {
+							-- If you type 'l' then 'j', map to Escape
+							j = "<Esc>",
+						},
+					},
+					-- 'v' for Visual Mode
+					v = {
 						j = {
 							-- If you type 'j' then 'k', map to Escape
 							k = "<Esc>",
@@ -77,12 +94,15 @@ return {
 					enabled = true,
 					multi_line = true, -- Enable full-screen search for f/F/t/T
 				},
+				search = { -- Use flash interface with "/" search
+					enabled = true,
+				},
 			},
 		},
 		keys = {
 			-- 1. Standard Flash Jump (Keep on 's')
 			{
-				"<leader>s",
+				"<CR>",
 				mode = { "n", "x", "o" },
 				function()
 					require("flash").jump()
