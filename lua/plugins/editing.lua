@@ -68,4 +68,10 @@ return {
 			require("nvim-surround").setup({})
 		end,
 	},
+
+	-- 4. Smart find-replace with (and other stuff)
+	{
+		"tpope/vim-abolish",
+		event = "BufReadPost",
+	},
 }
