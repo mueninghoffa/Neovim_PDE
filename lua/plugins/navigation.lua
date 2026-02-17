@@ -100,7 +100,7 @@ return {
 			},
 		},
 		keys = {
-			-- 1. Standard Flash Jump (Keep on 's')
+			-- 1. Standard Flash Jump
 			{
 				"<CR>",
 				mode = { "n", "x", "o" },
