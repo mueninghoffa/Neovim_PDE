@@ -95,14 +95,14 @@ return {
 					multi_line = true, -- Enable full-screen search for f/F/t/T
 				},
 				search = { -- Use flash interface with "/" search
-					enabled = true,
+					enabled = false,
 				},
 			},
 		},
 		keys = {
 			-- 1. Standard Flash Jump
 			{
-				"<CR>",
+				"S",
 				mode = { "n", "x", "o" },
 				function()
 					require("flash").jump()
