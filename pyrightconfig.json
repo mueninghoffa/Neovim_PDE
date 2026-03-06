@@ -1,0 +1,21 @@
+{
+    "venvPath": "path/to/dir/containing/venv", 
+    "venv": "name_of_venv",
+    "diagnosticMode": "openFilesOnly",
+    "include": ["src", "tests"],
+    "exclude": [
+        "**/node_modules",
+        "**/__pycache__",
+        "**/.venv",
+        "**/.conda",
+        "**/*.egg-info",
+        "**/.ipynb_checkpoints",
+        "**/build",
+        "**/dist"
+    ],
+    "analysis": {
+        "useLibraryCodeForTypes": true,
+        "indexing": false,
+        "autoImportCompletions": true
+    }
+}

@@ -82,9 +82,14 @@ return {
 	-- 4. Autocomplete (nvim-cmp)
 	{
 		"hrsh7th/nvim-cmp",
-		dependencies = { "hrsh7th/cmp-nvim-lsp", "L3MON4D3/LuaSnip" },
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"L3MON4D3/LuaSnip",
+			"hrsh7th/cmp-buffer", -- Make sure you have the buffer source installed!
+		},
 		config = function()
 			local cmp = require("cmp")
+
 			cmp.setup({
 				snippet = {
 					expand = function(args)
@@ -98,6 +103,19 @@ return {
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
+					{
+						name = "buffer",
+						option = {
+							get_bufnrs = function()
+								local bufs = {}
+								-- Only get buffers visible in current tab's windows
+								for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+									bufs[vim.api.nvim_win_get_buf(win)] = true
+								end
+								return vim.tbl_keys(bufs)
+							end,
+						},
+					},
 				}),
 			})
 		end,

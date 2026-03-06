@@ -202,3 +202,6 @@ Open neovim with the command `nvim`. The first time Neovim is opened, it should 
 
 ### Manually install treesitter languages
 For reasons I do not know, treesitter refuses to automatically install the languages listed in its config function. Manually install a language with the command `:TSInstall <language>`.
+
+### Pyright configuration
+Copy `pyrightconfig.json` into the root directory of any project you are working on. Edit the `"venv_path"` and `"venv"` entries to point to the virtual environment for said project, if you are using one. This config file tells Pyright where the virtual environment is, to ignore metadata files, and to only run diagnostics on files that are open.
