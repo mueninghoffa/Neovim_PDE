@@ -39,23 +39,29 @@ return {
 				-- Navigation (Jump between changes)
 				map("n", "<leader>gn", function()
 					if vim.wo.diff then
-						return "]c"
+						vim.cmd.normal({ "]c", bang = true })
+						vim.cmd("normal! zz")
+					else
+						gs.nav_hunk("next", { target = "all" })
+						-- Wait 50ms for the async jump to finish, THEN center
+						vim.defer_fn(function()
+							vim.cmd("normal! zz")
+						end, 10)
 					end
-					vim.schedule(function()
-						gs.next_hunk()
-					end)
-					return "<Ignore>"
-				end, { expr = true })
+				end, { desc = "Git: Next Hunk & Center" })
 
 				map("n", "<leader>gp", function()
 					if vim.wo.diff then
-						return "[c"
+						vim.cmd.normal({ "[c", bang = true })
+						vim.cmd("normal! zz")
+					else
+						gs.nav_hunk("prev", { target = "all" })
+						-- Wait 50ms for the async jump to finish, THEN center
+						vim.defer_fn(function()
+							vim.cmd("normal! zz")
+						end, 10)
 					end
-					vim.schedule(function()
-						gs.prev_hunk()
-					end)
-					return "<Ignore>"
-				end, { expr = true })
+				end, { desc = "Git: Prev Hunk & Center" })
 
 				-- Actions
 				map("n", "<leader>gP", gs.preview_hunk, { desc = "Git: Preview Hunk" })
