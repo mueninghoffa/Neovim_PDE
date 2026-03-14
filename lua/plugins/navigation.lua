@@ -14,6 +14,8 @@ return {
 				max_width = { 40, 0.2 },
 				min_width = 10,
 			},
+			preserve_equality = false,
+			post_jump_cmd = "normal! zt",
 		},
 		keys = {
 			{ "<leader>a", "<cmd>AerialToggle<CR>", desc = "Toggle [A]erial Sidebar" },

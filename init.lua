@@ -10,6 +10,7 @@ vim.opt.scrolloff = 5 -- Start scrolling 8 lines before edge of screen
 vim.opt.cursorline = true -- Highlight the line the cursor is on
 vim.opt.termguicolors = true
 vim.opt.updatetime = 250 -- Enable 24-bit RGB colors
+vim.opt.equalalways = false
 
 vim.g.loaded_netrw = 1 -- manually disable netrw to prevent conflicts
 vim.g.loaded_netrwPlugin = 1
