@@ -76,6 +76,7 @@ return {
 					prefix = "",
 				},
 			})
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true, buffer = true })
 		end,
 	},
 
